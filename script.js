@@ -7,7 +7,11 @@ function salvarClienteNoLog(cliente) {
         body: JSON.stringify(cliente)
     }).then(response => {
         if (!response.ok) {
-            console.error('Erro ao salvar cliente no log.');
+            response.json().then(data => {
+                console.error('Erro ao salvar cliente no log:', data.message);
+            });
+        } else {
+            console.log('Cliente salvo no log com sucesso.');
         }
     }).catch(error => console.error('Erro ao salvar cliente no log:', error));
 }
