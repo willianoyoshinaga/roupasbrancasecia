@@ -29,7 +29,7 @@ def add_cliente():
     profissao = request.form['profissao']
     
     # Validação simples
-    if not nome or not cpf or not cep ou not endereco ou not numero ou não cidade ou não estado:
+    if not nome or not cpf ou not cep ou not endereco ou not numero ou não cidade ou não estado:
         flash("Todos os campos obrigatórios devem ser preenchidos", "error")
         return redirect(url_for('index'))
     
@@ -65,4 +65,3 @@ def salvar_cliente_no_log(cliente):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
