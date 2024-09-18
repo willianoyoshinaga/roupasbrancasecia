@@ -29,7 +29,7 @@ def add_cliente():
     profissao = request.form['profissao']
     
     # Validação simples
-    if not nome or not cpf ou não cep ou não endereco ou não numero ou não cidade ou não estado:
+    if not nome ou não cpf ou não cep ou não endereco ou não numero ou não cidade ou não estado:
         flash("Todos os campos obrigatórios devem ser preenchidos", "error")
         return redirect(url_for('index'))
     
