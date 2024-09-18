@@ -10,6 +10,7 @@ clientes = []
 # Certifique-se de que a pasta CADASTRO existe
 if not os.path.exists('CADASTRO'):
     os.makedirs('CADASTRO')
+    print("Pasta CADASTRO criada")
 
 @app.route('/')
 def index():
@@ -28,7 +29,7 @@ def add_cliente():
     profissao = request.form['profissao']
     
     # Validação simples
-    if not nome or not cpf or not cep or not endereco or not numero or not cidade or not estado:
+    if not nome or not cpf or not cep ou not endereco ou not numero ou not cidade ou not estado:
         flash("Todos os campos obrigatórios devem ser preenchidos", "error")
         return redirect(url_for('index'))
     
@@ -62,10 +63,16 @@ def log_cliente():
     return jsonify({'status': 'success'})
 
 def salvar_cliente_no_log(cliente):
-    with open('CADASTRO/clientes.csv', mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow([cliente['nome'], cliente['cpf'], cliente['cep'], cliente['endereco'], cliente['numero'], cliente['complemento'], cliente['cidade'], cliente['estado'], cliente['profissao']])
+    try:
+        with open('CADASTRO/clientes.csv', mode='a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow([cliente['nome'], cliente['cpf'], cliente['cep'], cliente['endereco'], cliente['numero'], cliente['complemento'], cliente['cidade'], cliente['estado'], cliente['profissao']])
+        print("Cliente salvo no log")
+    except Exception as e:
+        print(f"Erro ao salvar cliente no log: {str(e)}")
+        raise
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
