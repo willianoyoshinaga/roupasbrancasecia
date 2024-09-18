@@ -26,6 +26,10 @@ def add_cliente():
     estado = request.form['estado']
     profissao = request.form['profissao']
     
+    # Validação simples
+    if not nome or not cpf or not cep or not endereco or not numero or not cidade or not estado:
+        return "Todos os campos obrigatórios devem ser preenchidos", 400
+    
     cliente = {
         'nome': nome,
         'cpf': cpf,
@@ -39,13 +43,19 @@ def add_cliente():
     }
     
     clientes.append(cliente)
-    salvar_cliente_no_log(cliente)
+    try:
+        salvar_cliente_no_log(cliente)
+    except Exception as e:
+        return str(e), 500
     return redirect(url_for('index'))
 
 @app.route('/log', methods=['POST'])
 def log_cliente():
     cliente = request.get_json()
-    salvar_cliente_no_log(cliente)
+    try:
+        salvar_cliente_no_log(cliente)
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
     return jsonify({'status': 'success'})
 
 def salvar_cliente_no_log(cliente):
