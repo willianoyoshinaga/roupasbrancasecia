@@ -65,3 +65,4 @@ def salvar_cliente_no_log(cliente):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
