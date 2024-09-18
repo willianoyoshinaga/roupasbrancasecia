@@ -1,6 +1,6 @@
 import os
 import csv
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
 app.secret_key = 'sua_chave_secreta'  # Necessário para usar flash messages
@@ -29,7 +29,7 @@ def add_cliente():
     profissao = request.form['profissao']
     
     # Validação simples
-    if not nome or not cpf ou not cep ou not endereco ou not numero ou não cidade ou não estado:
+    if not nome or not cpf or not cep ou not endereco ou not numero ou não cidade ou não estado:
         flash("Todos os campos obrigatórios devem ser preenchidos", "error")
         return redirect(url_for('index'))
     
@@ -53,15 +53,6 @@ def add_cliente():
         flash(f"Erro ao salvar o cadastro: {str(e)}", "error")
     return redirect(url_for('index'))
 
-@app.route('/log', methods=['POST'])
-def log_cliente():
-    cliente = request.get_json()
-    try:
-        salvar_cliente_no_log(cliente)
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)}), 500
-    return jsonify({'status': 'success'})
-
 def salvar_cliente_no_log(cliente):
     try:
         with open('CADASTRO/clientes.csv', mode='a', newline='', encoding='utf-8') as file:
@@ -74,3 +65,4 @@ def salvar_cliente_no_log(cliente):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
