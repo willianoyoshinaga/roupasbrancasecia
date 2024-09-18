@@ -1,8 +1,9 @@
 import os
 import csv
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
 
 app = Flask(__name__)
+app.secret_key = 'sua_chave_secreta'  # Necessário para usar flash messages
 
 clientes = []
 
@@ -28,7 +29,8 @@ def add_cliente():
     
     # Validação simples
     if not nome or not cpf or not cep or not endereco or not numero or not cidade or not estado:
-        return "Todos os campos obrigatórios devem ser preenchidos", 400
+        flash("Todos os campos obrigatórios devem ser preenchidos", "error")
+        return redirect(url_for('index'))
     
     cliente = {
         'nome': nome,
@@ -45,8 +47,9 @@ def add_cliente():
     clientes.append(cliente)
     try:
         salvar_cliente_no_log(cliente)
+        flash("Cadastro concluído com sucesso!", "success")
     except Exception as e:
-        return str(e), 500
+        flash(f"Erro ao salvar o cadastro: {str(e)}", "error")
     return redirect(url_for('index'))
 
 @app.route('/log', methods=['POST'])
